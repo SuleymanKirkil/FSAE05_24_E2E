@@ -8,16 +8,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
+import static stepdefinitions.EndToEndStepDefs.email;
 
 
 public class Authentication {
 
     public static String generateToken(){
         Map<String,String> credential = new HashMap<>();
-
-        credential.put("email",ConfigReader.getProperty("contact_list_username"));
-        credential.put("password",ConfigReader.getProperty("contact_list_password"));
-
+if(email==null) {
+    credential.put("email", ConfigReader.getProperty("contact_list_username"));
+    credential.put("password", ConfigReader.getProperty("contact_list_password"));
+} else {
+    credential.put("email", email);
+    credential.put("password", "Tester.14");
+}
         Response response =given().
                                   body(credential).
                                   contentType(ContentType.JSON).
